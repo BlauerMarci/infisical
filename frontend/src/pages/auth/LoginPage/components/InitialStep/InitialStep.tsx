@@ -13,6 +13,9 @@ import { RegionSelect } from "@app/components/navigation/RegionSelect";
 import { createNotification } from "@app/components/notifications";
 import attemptLogin from "@app/components/utilities/attemptLogin";
 import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
   Badge,
   Button,
   Card,
@@ -68,6 +71,8 @@ export const InitialStep = ({ setSection, isAdmin }: Props) => {
   const { lastLogin, saveLastLogin } = useLastLogin();
 
   const callbackPort = queryParams.get("callback_port");
+  const inviteParam = queryParams.get("invite_signup_disabled");
+  const isInviteSignupDisabled = inviteParam === "true" || inviteParam === '"true"';
 
   const {
     register,
@@ -245,6 +250,14 @@ export const InitialStep = ({ setSection, isAdmin }: Props) => {
           </CardAction>
         </CardHeader>
         <CardContent>
+          {isInviteSignupDisabled && (
+            <Alert variant="danger" className="mb-4 text-left">
+              <AlertTitle>Registrierung fehlgeschlagen</AlertTitle>
+              <AlertDescription>
+                Der Administrator hat die Registrierung für neue Benutzer deaktiviert.
+              </AlertDescription>
+            </Alert>
+          )}
           {shouldDisplayLoginMethod(LoginMethod.EMAIL) && (
             <>
               <div className="w-full">

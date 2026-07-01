@@ -58,6 +58,15 @@ export const Route = createFileRoute("/_restrict-login-signup/signupinvite")({
 
       if (result.token) {
         // New user — store signup token, render the signup form
+        if (!context.serverConfig.allowSignUp) {
+          throw redirect({
+            to: "/login",
+            search: {
+              invite_signup_disabled: "true"
+            }
+          });
+        }
+
         SecurityClient.setSignupToken(result.token);
         return { inviteEmail: email };
       }
