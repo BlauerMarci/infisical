@@ -54,6 +54,23 @@ export const authRateLimit: RateLimitOptions = {
   keyGenerator: (req) => req.realIp
 };
 
+export const strictLoginRateLimit: RateLimitOptions = {
+  timeWindow: 15 * 60 * 1000,
+  hook: "preValidation",
+  max: process.env.DISABLE_LOGIN_RATE_LIMIT === "true" ? 999999 : 5,
+  keyGenerator: (req) => {
+    const email = (req.body as { email?: string })?.email || "";
+    const ip = req.headers["x-forwarded-for"] || req.ip;
+    return `${email}:${ip}`;
+  },
+  skipOnError: false,
+  errorResponseBuilder: (_, context) => {
+    throw new RateLimitError({
+      message: `Too many login attempts. Please try again in ${Math.ceil(context.ttl / 1000 / 60)} minutes.`
+    });
+  }
+};
+
 export const inviteUserRateLimit: RateLimitOptions = {
   timeWindow: 60 * 1000,
   hook: "preValidation",

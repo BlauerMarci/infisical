@@ -3,7 +3,7 @@ import { z } from "zod";
 import { INFISICAL_PROVIDER_GITHUB_ACCESS_TOKEN } from "@app/lib/config/const";
 import { getConfig } from "@app/lib/config/env";
 import { UnauthorizedError } from "@app/lib/errors";
-import { authRateLimit } from "@app/server/config/rateLimiter";
+import { authRateLimit, strictLoginRateLimit } from "@app/server/config/rateLimiter";
 import { addAuthOriginDomainCookie } from "@app/server/lib/cookie";
 import { getUserAgentType } from "@app/server/plugins/audit-log";
 import { verifyAuth } from "@app/server/plugins/auth/verify-auth";
@@ -129,7 +129,7 @@ export const registerLoginRouter = async (server: FastifyZodProvider) => {
     method: "POST",
     url: "/login2",
     config: {
-      rateLimit: authRateLimit
+      rateLimit: strictLoginRateLimit
     },
     schema: {
       operationId: "loginExchangeClientProofV3",
@@ -214,7 +214,7 @@ export const registerLoginRouter = async (server: FastifyZodProvider) => {
     method: "POST",
     url: "/login",
     config: {
-      rateLimit: authRateLimit
+      rateLimit: strictLoginRateLimit
     },
     schema: {
       operationId: "loginV3",
