@@ -252,9 +252,9 @@ export const InitialStep = ({ setSection, isAdmin }: Props) => {
         <CardContent>
           {isInviteSignupDisabled && (
             <Alert variant="danger" className="mb-4 text-left">
-              <AlertTitle>Registrierung fehlgeschlagen</AlertTitle>
+              <AlertTitle>Registration failed</AlertTitle>
               <AlertDescription>
-                Der Administrator hat die Registrierung für neue Benutzer deaktiviert.
+                The Adminastrator has disabled the registration for new users.
               </AlertDescription>
             </Alert>
           )}
